@@ -42,17 +42,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/login").permitAll();
         //user can only access this url
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/users").hasRole("USER");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/users").hasAnyAuthority("USER");
 
         //Manager can access these urls
-        http.authorizeRequests().antMatchers( "/api/users","/api/user/save").hasRole("MANAGER");
+        http.authorizeRequests().antMatchers( "/api/users","/api/user/save").hasAnyAuthority("MANAGER");
 
         //Admin can do this
         http.authorizeRequests().antMatchers( "/api/users","/api/user/save","/api/role/save")
-                .hasRole("ADMIN");
+                .hasAnyAuthority("ADMIN");
 
         //super admin can access all urls
-        http.authorizeRequests().antMatchers( "/api/**").hasRole("SUPER_ADMIN");
+        http.authorizeRequests().antMatchers( "/api/**").hasAnyAuthority("SUPER_ADMIN");
 
 
         http.authorizeRequests().anyRequest().authenticated();
